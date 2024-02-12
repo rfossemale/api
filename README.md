@@ -32,6 +32,28 @@
 $ npm install
 ```
 
+## DB notas y creación
+- npx prisma generate
+
+``
+Need to install the following packages:
+prisma@5.2.0
+Ok to proceed? (y) y
+``
+
+Esto generará el cliente Prisma en el directorio src/prisma/client.
+
+(no estoy seguro) npm install prisma@5.2.0
+
+```bash
+$ npx prisma migrate dev --name init
+```
+Este comando hace 2 cosas:
+
+- Crea un nuevo SQL migration file para esta migración
+- Corre el SQL migration en la base de datos
+
+
 ## Running the app
 
 ```bash
