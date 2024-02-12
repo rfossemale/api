@@ -1,16 +1,19 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { Table, Column, Model, Unique, DataType } from 'sequelize-typescript';
 
 @Table
-export class User extends Model {
+class User extends Model {
+  @Column({ primaryKey: true, autoIncrement: true })
+  id: number;
+
   @Column
   name: string;
 
-  @Column
-  lastName: string;
-
-  @Column
+  @Unique
+  @Column(DataType.STRING)
   email: string;
 
-  @Column({ defaultValue: true })
-  isActive: boolean;
+  @Column(DataType.ENUM('normal', 'operator', 'administrator'))
+  role: 'normal' | 'operator' | 'administrator';
 }
+
+export default User;

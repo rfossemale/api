@@ -1,55 +1,47 @@
-import {Injectable} from "@nestjs/common";
-import {User} from "../../models/User";
-import {InjectModel} from "@nestjs/sequelize";
-// import * as bcrypt from "bcrypt";
-
-type Response  = {
-  success: boolean;
-  data: {} | null;
-  error?: {} | string;
-}
+import { Injectable } from '@nestjs/common';
+import User from '../../models/User';
+import { InjectModel } from '@nestjs/sequelize';
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectModel(User)
-    private userModel: typeof User,
-    // private readonly prismaService: PrismaService,
-    // service to save user.ts in context
-  ) {}
+  constructor(@InjectModel(User) private userModel: typeof User) {}
 
   async findAll(): Promise<User[]> {
     return this.userModel.findAll();
   }
 
   async getUserById(id: number): Promise<User> {
-    return this.userModel.findOne({ where: { id }});
+    return this.userModel.findOne({ where: { id } });
   }
 
-  async getUser(data: { id?: number, email?: string }) {
-    const { id, email} = data;
+  async getUser(data: { id?: number; email?: string }) {
+    const { id, email } = data;
     // validar como se comporta con id = null y email = 'admin@mail.com'
-    return this.userModel.findOne({ where: { id, email }});
+    return this.userModel.findOne({ where: { id, email } });
   }
 
-  async createUser(data: { // sanitize data ?
-    email: string;
-    password: string;
-    firstName: string;
-    lastname: string;
-    isActive: boolean;
-  }, trans) {
+  async createUser(
+    data: {
+      // sanitize data ?
+      email: string;
+      password: string;
+      firstName: string;
+      lastname: string;
+      isActive: boolean;
+    },
+    trans,
+  ) {
     try {
-      await this.userModel.create(data, { transaction: trans});
+      await this.userModel.create(data, { transaction: trans });
     } catch (err) {
       // implement DatabaseError handler
       throw err;
     }
   }
-  async validateUser(data: { email: string, password: string }): Promise<any> {
+  async validateUser(data: { email: string; password: string }): Promise<any> {
     // let response: Response = { success: false, data: null };
-    console.log("Parameter received: ", data);
+    console.log('Parameter received: ', data);
     try {
-      return  Promise.resolve();
+      return Promise.resolve();
       // const promise =  new Promise(async (resolve, reject) => {
       //   const { email, password} = data;
       //   const user.ts = await this.getUser({ email });
@@ -71,7 +63,7 @@ export class UserService {
       // });
       // return promise;
     } catch (error) {
-      return Promise.reject("Error validate user.ts");
+      return Promise.reject('Error validate user.ts');
     }
   }
 }
